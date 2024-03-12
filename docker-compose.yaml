@@ -1,0 +1,19 @@
+version: "3.2"
+services:
+  auth_cache:
+    image: "redis:alpine"
+    restart: always
+    entrypoint: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    ports:
+     - "6379:6379"
+    volumes:
+      - ./infrastructure/redis.conf:/usr/local/etc/redis/redis.conf:ro
+      - auth_cache_data:/data
+    networks:
+      - auth_net
+
+volumes:
+  auth_cache_data:
+
+networks:
+  auth_net:
