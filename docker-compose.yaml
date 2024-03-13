@@ -1,0 +1,35 @@
+version: "3.2"
+services:
+  auth_cache:
+    image: "redis:alpine"
+    restart: always
+    entrypoint: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    ports:
+     - "6379:6379"
+    volumes:
+      - ./infrastructure/redis.conf:/usr/local/etc/redis/redis.conf:ro
+      - auth_cache_data:/data
+    networks:
+      - auth_net
+
+  auth_db:
+    image: postgres:13.3
+    command: ["postgres", "-c", "config_file=/etc/postgresql.conf"]
+    environment:
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    env_file:
+      - infrastructure/postgresql.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./infrastructure/postgresql.conf:/etc/postgresql.conf:ro
+      - auth_db_data:/var/lib/postgresql/data
+    networks:
+      - auth_net
+
+volumes:
+  auth_cache_data:
+  auth_db_data:
+
+networks:
+  auth_net:
