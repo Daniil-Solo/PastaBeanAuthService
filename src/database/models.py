@@ -22,7 +22,7 @@ class SignIn(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     user_agent: Mapped[str]
-    auth_token: Mapped[str]
+    auth_token: Mapped[str] = mapped_column(unique=True)
     created_at: Mapped[datetime.datetime] = mapped_column(
         server_default=text("TIMEZONE('utc', now())")
     )
@@ -36,8 +36,8 @@ class User(Base):
     __tablename__ = "users"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str]
-    email: Mapped[str]
+    name: Mapped[str] = mapped_column(unique=True)
+    email: Mapped[str] = mapped_column(unique=True)
     created_at: Mapped[datetime.datetime] = mapped_column(
         server_default=text("TIMEZONE('utc', now())")
     )
