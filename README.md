@@ -29,21 +29,21 @@ __Для авторизированно пользователя доступн�
 
 ```mermaid
 erDiagram
-    users {
+    User {
         serial id
         varchar name
         varchar email
         timestamp created_at
     }
-    users ||--|| secure_user_infos : has
-    secure_user_infos{
+    User ||--|| SecureUserInfo : has
+    SecureUserInfo{
         serial id
         varchar hashed_password
         varchar salt
         timestamp updated_at
     }
-    users ||--|| sign_ins : has
-    sign_ins{
+    User ||--|{ SignIn : "logins with"
+    SignIn{
         serial id
         varchar user_agent
         varchar auth_token
