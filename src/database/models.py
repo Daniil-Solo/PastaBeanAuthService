@@ -27,7 +27,7 @@ class SignIn(Base):
         server_default=text("TIMEZONE('utc', now())")
     )
     is_logout: Mapped[bool] = mapped_column(default=False)
-    logout_at: Mapped[datetime.datetime] = mapped_column(default=None)
+    logout_at: Mapped[datetime.datetime] = mapped_column(default=None, nullable=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     user: Mapped["User"] = relationship(back_populates="sign_ins")
 
