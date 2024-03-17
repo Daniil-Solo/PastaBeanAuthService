@@ -2,7 +2,7 @@ import re
 import os
 import hashlib
 from src.constants import PASSWORD_MIN_LENGTH
-from src.exceptions import PasswordValidationException
+from src.services.exceptions import PasswordValidationException
 
 
 class PasswordService:
