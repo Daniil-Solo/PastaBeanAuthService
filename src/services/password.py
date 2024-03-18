@@ -12,9 +12,9 @@ class PasswordService:
             raise PasswordValidationException(
                 f"Пароль слишком короткий, требуется минимум {PASSWORD_MIN_LENGTH} символов")
         elif re.search('[0-9]', password) is None:
-            raise PasswordValidationException(f"Пароль должен содержать хотя бы одну цифру")
+            raise PasswordValidationException("Пароль должен содержать хотя бы одну цифру")
         elif re.search('[a-zA-Z]', password) is None:
-            raise PasswordValidationException(f"Пароль должен содержать хотя бы одну латинскую букву")
+            raise PasswordValidationException("Пароль должен содержать хотя бы одну латинскую букву")
 
     @staticmethod
     def create_hashed_password_and_salt(password: str) -> tuple[str, str]:
