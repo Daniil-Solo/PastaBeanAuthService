@@ -18,6 +18,7 @@ class Config(BaseSettings):
     DB_USER: str
     DB_PASSWORD: str
     DB_NAME: str
+    REDIS_URL: str
     MODE: ApplicationMode = Field(default=ApplicationMode.DEBUG)
 
     @property
