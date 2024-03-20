@@ -12,7 +12,7 @@ class UserInMemoryRepository(IUserRepository):
         self.users: list[UserDTO] = []
         self.next_id = 1
 
-    def add_one(self, data: UserCreateDTO) -> UserDTO:
+    async def add_one(self, data: UserCreateDTO) -> UserDTO:
         user_id = self.next_id
         self.next_id += 1
         user = UserDTO(
@@ -24,38 +24,38 @@ class UserInMemoryRepository(IUserRepository):
         self.users.append(user)
         return user
 
-    def exist_by_name(self, name: str) -> bool:
+    async def exist_by_name(self, name: str) -> bool:
         return any(user.name == name for user in self.users)
 
-    def exist_by_email(self, email: str) -> bool:
+    async def exist_by_email(self, email: str) -> bool:
         return any(user.email == email for user in self.users)
 
-    def get_by_id(self, user_id: int) -> Optional[UserDTO]:
+    async def get_by_id(self, user_id: int) -> Optional[UserDTO]:
         user = next((user for user in self.users if user.id == user_id), None)
         return user
 
-    def get_by_email(self, email: str) -> Optional[UserDTO]:
+    async def get_by_email(self, email: str) -> Optional[UserDTO]:
         user = next((user for user in self.users if user.email == email), None)
         return user
 
-    def update_password(self, user_id: int, hashed_password: str, salt: str) -> None:
-        user = self.get_by_id(user_id)
+    async def update_password(self, user_id: int, hashed_password: str, salt: str) -> None:
+        user = await self.get_by_id(user_id)
         if user:
             user.hashed_password = hashed_password
             user.salt = salt
             user.password_updated_at = datetime.datetime.utcnow()
 
-    def update_name(self, user_id: int, name: str) -> None:
-        user = self.get_by_id(user_id)
+    async def update_name(self, user_id: int, name: str) -> None:
+        user = await self.get_by_id(user_id)
         if user:
             user.name = name
 
-    def update_email(self, user_id: int, email: str) -> None:
-        user = self.get_by_id(user_id)
+    async def update_email(self, user_id: int, email: str) -> None:
+        user = await self.get_by_id(user_id)
         if user:
             user.email = email
 
-    def delete_by_id(self, user_id: int) -> None:
+    async def delete_by_id(self, user_id: int) -> None:
         self.users = list(filter(lambda u: u.id != user_id, self.users))
 
 
