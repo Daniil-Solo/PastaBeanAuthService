@@ -12,7 +12,7 @@ class SignInSQLARepository(ISignInRepository):
         self.__session = session
 
     async def add_one(self, data: SignInCreateDTO) -> SignDTO:
-        signin = SignIn(**data.dict())
+        signin = SignIn(**data.model_dump())
         self.__session.add(signin)
         await self.__session.commit()
         await self.__session.refresh(signin)

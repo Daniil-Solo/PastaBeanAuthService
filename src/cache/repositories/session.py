@@ -13,7 +13,7 @@ class SessionRedisRepository(ISessionRepository):
 
     @staticmethod
     def __from_user_dto_to_json_string(data: UserDTO) -> str:
-        user_dict = data.dict()
+        user_dict = data.model_dump()
         user_dict["user_created_at"] = str(user_dict["user_created_at"])
         user_dict["password_updated_at"] = str(user_dict["password_updated_at"])
         user_data_string = json.dumps(user_dict)
