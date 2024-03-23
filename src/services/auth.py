@@ -72,4 +72,5 @@ class AuthService:
         await self.__user_repo.update_password(user_data.id, hashed_password, salt)
         user_data.hashed_password = hashed_password
         user_data.salt = salt
+        user_data.password_updated_at = datetime.datetime.utcnow()
         await self.__session_repo.update(auth_token, user_data)
