@@ -1,0 +1,56 @@
+version: "3.2"
+services:
+  auth_cache:
+    image: "redis:alpine"
+    restart: always
+    entrypoint: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    ports:
+     - "6379:6379"
+    volumes:
+      - ./infrastructure/redis.conf:/usr/local/etc/redis/redis.conf:ro
+      - test_auth_cache_data:/data
+    networks:
+      - auth_net
+
+  auth_db:
+    image: postgres:13.3
+    environment:
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    env_file:
+      - infrastructure/postgresql.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - test_auth_db_data:/var/lib/postgresql/data
+    networks:
+      - auth_net
+
+  allure:
+    image: "frankescobar/allure-docker-service"
+    environment:
+      CHECK_RESULTS_EVERY_SECONDS: 1
+      KEEP_HISTORY: 1
+    ports:
+      - "5050:5050"
+    volumes:
+      - ./allure-results:/app/allure-results
+      - ./allure-reports:/app/default-reports
+    networks:
+      - auth_net
+
+  allure-ui:
+    image: "frankescobar/allure-docker-service-ui"
+    environment:
+      ALLURE_DOCKER_PUBLIC_API_URL: "http://localhost:5050"
+      ALLURE_DOCKER_PUBLIC_API_URL_PREFIX: ""
+    ports:
+      - "5252:5252"
+    networks:
+      - auth_net
+
+volumes:
+  test_auth_cache_data:
+  test_auth_db_data:
+
+networks:
+  auth_net:

@@ -56,7 +56,7 @@ erDiagram
 ## Архитектура
 
 В сервисе явно выделены сервисы с бизнес-логикой, который оперируют интерфейсами репозиториев, которые в свою очередь ответственны за доступ к данным. 
-При тестировании используются репозитории, которые хранят данные в оперативной памяти.
+Для юнит-тестов используются репозитории, которые хранят данные в оперативной памяти.
 
 ## Локальная разработка
 
@@ -65,7 +65,16 @@ erDiagram
 docker-compose up -d
 ```
 
-### Запуск тестов
+## Запуск тестов
+### Юнит-тесты
+Для визуализации можно поднять allure с помощью docker-compose
 ```bash
-poetry run pytest tests
+# docker compose -f docker-compose.test.yaml up
+poetry run pytest tests --alluredir=allure-results
+```
+### Интеграционные тесты
+Для поднятие зависимых сервисов используется docker-compose
+```bash
+docker compose -f docker-compose.test.yaml up
+poetry run pytest tests --alluredir=allure-results
 ```
