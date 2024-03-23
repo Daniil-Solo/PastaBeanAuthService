@@ -31,8 +31,7 @@ class SessionRedisRepository(ISessionRepository):
             pass
         except json.decoder.JSONDecodeError:  # not json-format in returning value
             pass
-        finally:
-            return user_dto
+        return user_dto
 
     async def update(self, auth_token: str, user_data: UserDTO) -> None:
         user_data_string = self.__from_user_dto_to_json_string(user_data)
